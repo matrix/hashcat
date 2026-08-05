@@ -138,12 +138,20 @@ jobs:
           echo "$(brew --prefix llvm)/bin" >> $GITHUB_PATH
 
       - name: Build (Linux/macOS)
-        if: matrix.os_name_lowercase == 'linux' || matrix.os_name_lowercase == 'linux-arm64' || matrix.os_name_lowercase == 'macos'
+        if: matrix.os_name_lowercase == 'linux' || matrix.os_name_lowercase == 'macos'
         env:
           SHARED: ${{ matrix.shared }}
           TERM: xterm
         run: |
           make ENABLE_LTO=0 CC=clang CXX=clang++
+
+      - name: Build (Linux ARM / RPI)
+        if: matrix.os_name_lowercase == 'linux-arm64'
+        env:
+          SHARED: ${{ matrix.shared }}
+          TERM: xterm
+        run: |
+          make ENABLE_LTO=0 CC=clang CXX=clang++ IS_RPI=1
 
       - name: Build (FreeBSD)
         if: matrix.os_name_lowercase == 'freebsd'
@@ -311,7 +319,7 @@ jobs:
           sudo apt-get install -y --no-install-recommends \
                git make pkg-config clang lld llvm libomp-dev #libcurl4-openssl-dev libssl-dev
 
-      - name: Build binaries
+      - name: Build binaries (Linux ARM / RPI)
         env:
           TERM: xterm
         run: |
