@@ -185,6 +185,7 @@ jobs:
           envs: SHARED
           prepare: |
             export PATH="/usr/sbin:$PATH"
+            export PKG_PATH="https://cdn.netbsd.org/pub/pkgsrc/packages/NetBSD/$(uname -m)/$(uname -r)/All"
             pkg_add pkgin
             pkgin -y update
             pkgin -y full-upgrade
