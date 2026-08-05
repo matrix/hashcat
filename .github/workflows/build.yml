@@ -133,7 +133,7 @@ jobs:
 
       - name: Setup Python 3.12 (Linux-ARM64 / RPI only)
         if: matrix.os_name_lowercase == 'linux-arm64'
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v7
         with:
           python-version: '3.12'
 
@@ -329,7 +329,7 @@ jobs:
                git make pkg-config clang lld llvm libomp-dev #libcurl4-openssl-dev libssl-dev
 
       - name: Setup Python 3.12
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v7
         with:
           python-version: '3.12'
 
