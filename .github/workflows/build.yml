@@ -129,7 +129,7 @@ jobs:
         if: matrix.os_name_lowercase == 'linux-arm64'
         run: |
           sudo apt-get update
-          sudo apt-get install -y clang lld llvm libomp-dev #libcurl4-openssl-dev libssl-dev
+          sudo apt-get install -y python3 clang lld llvm libomp-dev #libcurl4-openssl-dev libssl-dev
 
       - name: Install dependencies (macOS only)
         if: matrix.os_name_lowercase == 'macos'
@@ -151,7 +151,7 @@ jobs:
           SHARED: ${{ matrix.shared }}
           TERM: xterm
         run: |
-          make ENABLE_LTO=0 CC=clang CXX=clang++ AR=llvm-ar IS_RPI=1
+          make ENABLE_LTO=0 IS_RPI=1 CC=clang CXX=clang++ AR=llvm-ar
 
       - name: Build (FreeBSD)
         if: matrix.os_name_lowercase == 'freebsd'
@@ -283,9 +283,9 @@ jobs:
 
           cd ~/src
           mkdir /opt/win-python && cd /opt/win-python
-          wget https://repo.msys2.org/mingw/mingw64/mingw-w64-x86_64-python-3.12.11-1-any.pkg.tar.zst
-          unzstd mingw-w64-x86_64-python-3.12.11-1-any.pkg.tar.zst
-          tar -xf mingw-w64-x86_64-python-3.12.11-1-any.pkg.tar
+          wget https://repo.msys2.org/mingw/mingw64/mingw-w64-x86_64-python-3.14.6-2-any.pkg.tar.zst
+          unzstd mingw-w64-x86_64-python-3.14.6-2-any.pkg.tar.zst
+          tar -xf mingw-w64-x86_64-python-3.14.6-2-any.pkg.tar
 
           cd ~/src
           curl https://sh.rustup.rs -sSf | sh -s -- -y --default-toolchain stable
@@ -320,13 +320,13 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y --no-install-recommends \
-               git make pkg-config clang lld llvm libomp-dev #libcurl4-openssl-dev libssl-dev
+               git make pkg-config python3 clang lld llvm libomp-dev #libcurl4-openssl-dev libssl-dev
 
       - name: Build binaries (Linux ARM64 / RPI)
         env:
           TERM: xterm
         run: |
-          make ENABLE_LTO=0 CC=clang CXX=clang++ AR=llvm-ar IS_RPI=1
+          make ENABLE_LTO=0 IS_RPI=1 CC=clang CXX=clang++ AR=llvm-ar
 
       - name: Generate artifacts
         uses: actions/upload-artifact@v6
