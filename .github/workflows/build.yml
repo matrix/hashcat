@@ -315,7 +315,7 @@ jobs:
         env:
           TERM: xterm
         run: |
-          make ENABLE_LTO=0 CC=clang CXX=clang++ AR=llvm-ar
+          make ENABLE_LTO=0 CC=clang CXX=clang++ AR=llvm-ar IS_RPI=1
 
       - name: Generate artifacts
         uses: actions/upload-artifact@v6
