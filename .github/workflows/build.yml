@@ -125,7 +125,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y libomp-dev
 
-      - name: Install dependencies (Linux-ARM64 only)
+      - name: Install dependencies (Linux-ARM64 / RPI only)
         if: matrix.os_name_lowercase == 'linux-arm64'
         run: |
           sudo apt-get update
@@ -145,13 +145,13 @@ jobs:
         run: |
           make ENABLE_LTO=0 CC=clang CXX=clang++
 
-      - name: Build (Linux ARM / RPI)
+      - name: Build (Linux ARM64 / RPI)
         if: matrix.os_name_lowercase == 'linux-arm64'
         env:
           SHARED: ${{ matrix.shared }}
           TERM: xterm
         run: |
-          make ENABLE_LTO=0 CC=clang CXX=clang++ IS_RPI=1
+          make ENABLE_LTO=0 CC=clang CXX=clang++ AR=llvm-ar IS_RPI=1
 
       - name: Build (FreeBSD)
         if: matrix.os_name_lowercase == 'freebsd'
@@ -251,6 +251,7 @@ jobs:
         with:
           name: hashcat-${{ matrix.os_name_lowercase }}-${{ matrix.shared == 0 && 'static' || 'shared' }}
           path: ${{ env.include_paths }}
+
   build_binaries:
     name: Build binaries (Linux and Windows)
     runs-on: ubuntu-latest
@@ -305,8 +306,9 @@ jobs:
         with:
           name: hashcat-${{ matrix.os_name_lowercase }}-cross
           path: ${{ env.include_paths }}
+
   build_binaries_arm:
-    name: Build binaries ARM
+    name: Build binaries (Linux ARM64 / RPI)
     runs-on: ubuntu-22.04-arm
     steps:
       - uses: actions/checkout@v6
@@ -320,7 +322,7 @@ jobs:
           sudo apt-get install -y --no-install-recommends \
                git make pkg-config clang lld llvm libomp-dev #libcurl4-openssl-dev libssl-dev
 
-      - name: Build binaries (Linux ARM / RPI)
+      - name: Build binaries (Linux ARM64 / RPI)
         env:
           TERM: xterm
         run: |
